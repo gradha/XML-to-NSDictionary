@@ -29,9 +29,7 @@ NSString *const kXMLReaderTextNodeKey = @"text";
     int count = 1;
     while (path = [e nextObject]) {
             
-            NSLog(@"path: %@", path);
             branch = [branch objectForKey:path];
-            NSLog(@"branch: %@", branch);
             count++;
         
     }
