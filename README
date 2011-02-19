@@ -7,8 +7,11 @@ The key ideas:
   5 If an element name is encountered multiple times, the value of the element is set to an array of children dictionaries
 
 ----Additions to NSDictionary----
-The retrieveForPath: method allows easy selection of items in a nested NSDictionary structure, using a string in the familar dot syntax. Items in NSArrays inside the hierarchy can also be moved through using object indexes. For example, the following nested NSDictionary:
+The retrieveForPath: method allows easy selection of items in a nested NSDictionary structure, using a string in
+the familar dot syntax. Items in NSArrays inside the hierarchy can also be moved through using object indexes, or
+by using "last" to get the last object in the array.
 
+For example, the following nested NSDictionary:
 NSDictionary *exampleDict =
 {
   results = {
@@ -25,7 +28,10 @@ NSDictionary *exampleDict =
   statusCode = OK;
 }
 
-The firstName of Jane's record can be quickly access by using:
-[exampleDict retrieveForPath:@"results.example1.userDetails.1.firstName"];
+The firstName of Jane's record can be quickly accessed by using:
+[exampleDict retrieveForPath:@"results.example1.userDetails.last.firstName"];
+
+The firstName of John's record can be quickly accessed by using:
+[exampleDict retrieveForPath:@"results.example1.userDetails.0.firstName"];
 
 Unfortunately NSArrays in the heirarchy seriously obfuscates the NSDictionary structure, and you'll have to know the index of the item you want when NSArrays appears.
