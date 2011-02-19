@@ -28,9 +28,21 @@ NSString *const kXMLReaderTextNodeKey = @"text";
     id branch = [self objectForKey:[e nextObject]];
     int count = 1;
     while (path = [e nextObject]) {
-            
+        
+        // Check if this branch is an NSArray
+        if ([branch isKindOfClass:[NSArray class]]) {
+            NSLog(@"is NSArray!");
+            NSLog(@"branch count: %i", [branch count]);
+            NSLog(@"path: %@", path);
+            if ([branch count] > [path intValue]) {
+                branch = [branch objectAtIndex:[path intValue]];
+            } else {
+                branch = nil;
+            }
+        } else {
             branch = [branch objectForKey:path];
-            count++;
+        }
+        count++;
         
     }
     
