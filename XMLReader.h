@@ -17,3 +17,10 @@
 + (NSDictionary *)dictionaryForXMLString:(NSString *)string error:(NSError **)errorPointer;
 
 @end
+
+@interface NSDictionary (XMLReaderNavigation)
+
+- (id)retrieveForPath:(NSString *)navPath;
+
+@end
+

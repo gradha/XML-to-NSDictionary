@@ -13,6 +13,35 @@ NSString *const kXMLReaderTextNodeKey = @"text";
 
 @end
 
+@implementation NSDictionary (XMLReaderNavigation)
+
+- (id)retrieveForPath:(NSString *)navPath {
+    
+    // Split path on dots
+    NSArray *pathItems = [navPath componentsSeparatedByString:@"."];
+    
+    // Enumerate through array
+    NSEnumerator *e = [pathItems objectEnumerator];
+    NSString *path;
+
+    // Set first branch from self
+    id branch = [self objectForKey:[e nextObject]];
+    int count = 1;
+    while (path = [e nextObject]) {
+            
+            NSLog(@"path: %@", path);
+            branch = [branch objectForKey:path];
+            NSLog(@"branch: %@", branch);
+            count++;
+        
+    }
+    
+    return branch;
+}
+
+@end
+
+
 
 @implementation XMLReader
 
