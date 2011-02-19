@@ -31,19 +31,25 @@ NSString *const kXMLReaderTextNodeKey = @"text";
         
         // Check if this branch is an NSArray
         if ([branch isKindOfClass:[NSArray class]]) {
-            NSLog(@"is NSArray!");
-            NSLog(@"branch count: %i", [branch count]);
-            NSLog(@"path: %@", path);
-            if ([branch count] > [path intValue]) {
-                branch = [branch objectAtIndex:[path intValue]];
+            
+            if ([path isEqualToString:@"last"]) {
+                branch = [branch lastObject];
             } else {
-                branch = nil;
+                if ([branch count] > [path intValue]) {
+                    branch = [branch objectAtIndex:[path intValue]];
+                } else {
+                    branch = nil;
+                }
             }
+            
         } else {
+            
+            //branch is assumed to be an NSDictionary
             branch = [branch objectForKey:path];
+            
         }
-        count++;
         
+        count++;
     }
     
     return branch;
