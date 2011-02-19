@@ -5,3 +5,24 @@ The key ideas:
   3 Attribute key-value pairs are added to the element’s child dictionary
   4 Strings from text nodes are assigned to the child dictionary’s “text” key
   5 If an element name is encountered multiple times, the value of the element is set to an array of children dictionaries
+
+----Additions to NSDictionary----
+The retrieveForPath: method allows easy selection of items in a nested NSDictionary structure, using a string in the familar dot syntax. For example, the following nested NSDictionary:
+
+NSDictionary *exampleDict =
+{
+  results = {
+      example1 = {
+          hash = 4H5keM;
+          string1 = "foo";
+          string2 = "bar";
+          userDetails = {
+              firstName = "John";
+              lastName = "Smith";
+          };
+      };
+  };
+  statusCode = OK;
+}
+
+The firstName value can be quickly access by using [exampleDict retrieveForPath:@"results.example1.userDetails.firstName"]
