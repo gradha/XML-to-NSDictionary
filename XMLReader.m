@@ -19,19 +19,23 @@ NSString *const kXMLReaderTextNodeKey = @"text";
     
     // Split path on dots
     NSArray *pathItems = [navPath componentsSeparatedByString:@"."];
-    
+
     // Enumerate through array
     NSEnumerator *e = [pathItems objectEnumerator];
-    NSString *path;
+    NSString *firstPath = [e nextObject];
+
+    if ([firstPath isEqualToString:@"*"])
+        return [self retrieveNode:[e nextObject] fromBranch:self];
 
     // Set first branch from self
-    id branch = [self objectForKey:[e nextObject]];
-    int count = 1;
+    NSString *path;
+    id branch = [self objectForKey:firstPath];
     while (path = [e nextObject]) {
-        
+        if ([path isEqualToString:@"*"])
+            return [self retrieveNode:[e nextObject] fromBranch:branch];
+
         // Check if this branch is an NSArray
         if ([branch isKindOfClass:[NSArray class]]) {
-            
             if ([path isEqualToString:@"last"]) {
                 branch = [branch lastObject];
             } else {
@@ -41,18 +45,39 @@ NSString *const kXMLReaderTextNodeKey = @"text";
                     branch = nil;
                 }
             }
-            
         } else {
-            
             //branch is assumed to be an NSDictionary
             branch = [branch objectForKey:path];
-            
         }
-        
-        count++;
     }
-    
+
     return branch;
+}
+
+/// Recursively scan branch for a specific node, and return it.
+- (id)retrieveNode:(NSString *)node fromBranch:(id)branch
+{
+    // Check if this branch is an NSArray
+    if ([branch isKindOfClass:[NSArray class]]) {
+        NSArray *children = branch;
+        const int numObjects = children.count;
+        for (int f = 0; f < numObjects; f++) {
+            id ret = [self retrieveNode:node fromBranch:children[f]];
+            if (ret)
+                return ret;
+        }
+    } else if ([branch isKindOfClass:[NSDictionary class]]) {
+        NSDictionary *children = branch;
+        id ret = children[node];
+        if (ret)
+            return ret;
+        for (NSString *key in [children allKeys]) {
+            ret = [self retrieveNode:node fromBranch:children[key]];
+            if (ret)
+                return ret;
+        }
+    }
+    return nil;
 }
 
 /// Safe wrapper round retrieveForPath, returns nil if the object is not a dict.
