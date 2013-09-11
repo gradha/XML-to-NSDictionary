@@ -21,6 +21,9 @@
 @interface NSDictionary (XMLReaderNavigation)
 
 - (id)retrieveForPath:(NSString *)navPath;
+- (NSDictionary*)dictionaryForPath:(NSString*)navPath;
+- (NSString*)textForPath:(NSString*)navPath;
+- (NSString*)trimmedTextForPath:(NSString*)navPath;
 
 @end
 

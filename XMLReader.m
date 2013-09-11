@@ -55,6 +55,32 @@ NSString *const kXMLReaderTextNodeKey = @"text";
     return branch;
 }
 
+/// Safe wrapper round retrieveForPath, returns nil if the object is not a dict.
+- (NSDictionary*)dictionaryForPath:(NSString*)navPath
+{
+    id ret = [self retrieveForPath:navPath];
+    if ([ret isKindOfClass:[NSDictionary class]])
+        return ret;
+    else
+        return nil;
+}
+
+/// Wraps around dictionaryForPath to retrieve the text key/value safely.
+- (NSString*)textForPath:(NSString*)navPath
+{
+    id ret = [self dictionaryForPath:navPath][kXMLReaderTextNodeKey];
+    if ([ret isKindOfClass:[NSString class]])
+        return ret;
+    else
+        return nil;
+}
+
+- (NSString*)trimmedTextForPath:(NSString*)navPath
+{
+    return [[self textForPath:navPath] stringByTrimmingCharactersInSet:
+        [NSCharacterSet whitespaceAndNewlineCharacterSet]];
+}
+
 @end
 
 
