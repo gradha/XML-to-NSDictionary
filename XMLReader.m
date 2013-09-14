@@ -132,12 +132,12 @@ NSString *const kXMLReaderTextNodeKey = @"text";
 #pragma mark -
 #pragma mark Parsing
 
-- (id)initWithError:(NSError **)error {
-	
-    if (self == [super init]) {
-	
-        errorPointer = error;
-    }
+- (id)initWithError:(NSError **)error
+{
+    if (!(self = [super init]))
+        return nil;
+
+    errorPointer = error;
     return self;
 }
 
